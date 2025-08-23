@@ -33,7 +33,7 @@ class Payment(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payment', verbose_name='Пользователь')
-    purchase_date = models.DateTimeField(default=timezone.now, verbose_name='Дата оплаты')
+    payment_date = models.DateTimeField(default=timezone.now, verbose_name='Дата оплаты')
     paid_lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, null=True, related_name='lesson',
                                     verbose_name='Оплаченный урок')
     paid_course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, related_name='course',
