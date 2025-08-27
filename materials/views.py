@@ -9,6 +9,11 @@ from .serializers import (CourseDetailSerializer, CourseSerializer,
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
 
+    def get_queryset(self):
+        if self.request.user.groups.filter('Moder').exists():
+            return self.queryset
+        return self.request.filter(owner=self.request.user)
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
@@ -41,6 +46,11 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+
+    def get_queryset(self):
+        if self.request.user.groups.filter(name='Moder').exists():
+            return self.queryset
+        return self.request.filter(owner=self.request.user)
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
