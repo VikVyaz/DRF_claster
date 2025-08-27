@@ -3,6 +3,8 @@ from rest_framework import generics, viewsets
 from .models import Course, Lesson
 from .serializers import CourseSerializer, LessonSerializer, CourseDetailSerializer
 
+from .permissions import IsModer
+
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
@@ -12,9 +14,15 @@ class CourseViewSet(viewsets.ModelViewSet):
             return CourseDetailSerializer
         return CourseSerializer
 
+    def get_permissions(self):
+        if self.action in ['destroy', 'create']:
+            self.permission_classes = (~IsModer,)
+        return super().get_permissions()
+
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
+    permission_classes = (~IsModer,)
 
 
 class LessonListAPIView(generics.ListAPIView):
@@ -34,3 +42,4 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
+    permission_classes = (~IsModer,)

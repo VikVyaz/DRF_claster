@@ -12,7 +12,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'avatar', 'phone_number', 'city',)
+        fields = ('id', 'email', 'password', 'avatar', 'phone_number', 'city', 'groups',)
         extra_kwargs = {
             'password': {'write_only': True}
         }
