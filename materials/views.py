@@ -13,7 +13,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         user = self.request.user
         queryset = self.queryset
 
-        if user.groups.filter('Moder').exists():
+        if user.groups.filter(name='Moder').exists():
             return queryset
         return queryset.filter(owner=user)
 
@@ -53,7 +53,7 @@ class LessonListAPIView(generics.ListAPIView):
         user = self.request.user
         queryset = Lesson.objects.all()
 
-        if user.groups.filter('Moder').exists():
+        if user.groups.filter(name='Moder').exists():
             return queryset
         return queryset.filter(owner=user)
 
