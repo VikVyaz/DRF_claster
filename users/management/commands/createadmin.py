@@ -7,11 +7,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         U = get_user_model()
         user = U.objects.create(
-            email=config('ADMIN_EMAIL'),
-            username=config('ADMIN_USERNAME'),
+            email=config("ADMIN_EMAIL"),
+            username=config("ADMIN_USERNAME"),
         )
 
-        user.set_password(config('ADMIN_PASSWORD'))
+        user.set_password(config("ADMIN_PASSWORD"))
 
         user.is_active = True
         user.is_staff = True
@@ -19,4 +19,4 @@ class Command(BaseCommand):
 
         user.save()
 
-        self.stdout.write(self.style.SUCCESS(f'Создан superuser с email: {user.email}'))
+        self.stdout.write(self.style.SUCCESS(f"Создан superuser с email: {user.email}"))
