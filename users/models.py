@@ -6,6 +6,7 @@ from materials.models import Course, Lesson
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(verbose_name="Email", unique=True)
     avatar = models.ImageField(
         verbose_name="Аватар", upload_to="users/avatars/", blank=True, null=True
