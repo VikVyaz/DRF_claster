@@ -3,15 +3,18 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
                                      UpdateAPIView)
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from users.models import Payment, User
+from users.paginators import PaymentPaginator
+from users.permissions import IsSuperUser
 from users.serializers import PaymentSerializer, UserSerializer
 
 
 class PaymentListAPIView(ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
+    pagination_class = PaymentPaginator
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = (
         "paid_lesson",
@@ -24,6 +27,7 @@ class PaymentListAPIView(ListAPIView):
 class UserListAPIView(ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated, IsSuperUser]
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -35,12 +39,15 @@ class UserCreateAPIView(CreateAPIView):
 class UserRetrieveAPIView(RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated, IsSuperUser]
 
 
 class UserUpdateAPIView(UpdateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated, IsSuperUser]
 
 
 class UserDestroyAPIView(DestroyAPIView):
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated, IsSuperUser]

@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
 from .models import Course, Lesson, CourseSubscribe
+from .paginators import MaterialsPaginator
 from .permissions import IsModer, IsOwner
 from .serializers import (CourseDetailSerializer, CourseSerializer,
                           LessonSerializer, CourseSubscribeSerializer)
@@ -12,6 +13,7 @@ from .serializers import (CourseDetailSerializer, CourseSerializer,
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
+    pagination_class = MaterialsPaginator
 
     def get_queryset(self):
         user = self.request.user
@@ -52,6 +54,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
+    pagination_class = MaterialsPaginator
 
     def get_queryset(self):
         user = self.request.user
@@ -82,6 +85,7 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
 class CourseSubscribeListAPIView(generics.ListAPIView):
     serializer_class = CourseSubscribeSerializer
     queryset = CourseSubscribe.objects.all()
+    pagination_class = MaterialsPaginator
 
 
 class CourseSubscribeAPIView(APIView):
