@@ -90,10 +90,9 @@ class CourseSubscribeListAPIView(generics.ListAPIView):
 
 class CourseSubscribeAPIView(APIView):
 
-    def post(self, *args, **kwargs):
-        user = self.request.user
-        course_id = self.request.data.get('course_id')
-        course = get_object_or_404(Course, id=course_id)
+    def post(self, request, pk):
+        user = request.user
+        course = get_object_or_404(Course, pk=pk)
 
         subs_item = CourseSubscribe.objects.filter(subscriber=user, course=course)
 
