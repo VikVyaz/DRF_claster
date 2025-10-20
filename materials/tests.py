@@ -9,6 +9,8 @@ from rest_framework import status
 
 
 class LessonTestCase(APITestCase):
+    """TestCase для Lesson"""
+
     def setUp(self):
         self.user = User.objects.create(email='test@test.com')
         self.course = Course.objects.create(name='test_course')
@@ -21,6 +23,7 @@ class LessonTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_lesson_list(self):
+        """Тест отображения list для Lesson с пагинацией"""
 
         url = reverse('materials:lesson_list')
         response = self.client.get(url)
@@ -50,6 +53,8 @@ class LessonTestCase(APITestCase):
         self.assertEqual(response.json(), result)
 
     def test_lesson_create(self):
+        """Тест создания Lesson"""
+
         url = reverse('materials:lesson_create')
         data = {
             'name': 'test',
@@ -186,7 +191,7 @@ class LessonTestCase(APITestCase):
             )
 
     def test_destroy_lesson(self):
-        """"""
+        """Тест удаления Lesson"""
 
         url = reverse('materials:lesson_delete', args=(self.lesson.pk,))
 
@@ -204,6 +209,8 @@ class LessonTestCase(APITestCase):
 
 
 class CourseSubscribeTestCase(APITestCase):
+    """TestCase для CourseSubscribe"""
+
     def setUp(self):
         self.user = User.objects.create(email='test@test.com')
         self.course = Course.objects.create(name='test_course')
@@ -212,6 +219,8 @@ class CourseSubscribeTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_subscribe_list(self):
+        """Тест отображения list для CourseSubscribe с пагинацией"""
+
         url = reverse('materials:course_subscribe_list')
         response = self.client.get(url)
 
@@ -242,6 +251,8 @@ class CourseSubscribeTestCase(APITestCase):
         self.assertEqual(response.json(), result)
 
     def test_subscribe_ON(self):
+        """Тест свитчера для CourseSubscribe(положение ON)"""
+
         self.subscribe.delete()
 
         url = reverse('materials:course_subscribe', args=(self.course.pk,))
@@ -263,6 +274,8 @@ class CourseSubscribeTestCase(APITestCase):
         )
 
     def test_subscribe_OFF(self):
+        """Тест свитчера для CourseSubscribe(положение OFF)"""
+
         url = reverse('materials:course_subscribe', args=(self.course.pk,))
         response = self.client.post(url)
 
