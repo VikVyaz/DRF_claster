@@ -21,6 +21,7 @@ django-filter = "^25.1"
 djangorestframework-simplejwt = "^5.5.1"
 ipython = "^9.4.0"
 coverage = "^7.10.5"
+drf-yasg = "^1.21.11"
 
 
 [build-system]

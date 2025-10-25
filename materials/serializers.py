@@ -28,7 +28,7 @@ class LessonSerializer(serializers.ModelSerializer):
 class CourseDetailSerializer(serializers.ModelSerializer):
     lesson_counter = serializers.SerializerMethodField()
     lessons_list = LessonSerializer(many=True, source="lessons")
-    is_subscribed = serializers.SerializerMethodField()
+    is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
@@ -44,7 +44,8 @@ class CourseDetailSerializer(serializers.ModelSerializer):
             "description",
             "lesson_counter",
             "lessons_list",
-            "owner"
+            "owner",
+            "is_subscribed",
         )
 
 
