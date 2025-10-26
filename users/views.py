@@ -9,6 +9,7 @@ from users.models import Payment, User
 from users.paginators import PaymentPaginator
 from users.permissions import IsSuperUser
 from users.serializers import PaymentSerializer, UserSerializer
+from users.services import create_stripe_price, create_stripe_session, create_stripe_product
 
 
 class PaymentListAPIView(ListAPIView):
@@ -22,6 +23,25 @@ class PaymentListAPIView(ListAPIView):
         "payment_method",
     )
     ordering_fields = ("payment_date",)
+
+
+class PaymentCreateAPIView(CreateAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
+    permission_classes = [IsAuthenticated,]
+
+    def perform_create(self, serializer):
+        payment = serializer.save()
+        if payment.paid_course:
+            prod = payment.paid_course
+        else:
+            prod = payment.paid_lesson
+        create_stripe_product(prod)
+        price = create_stripe_price(int(payment.amount_in_cents), prod.name)
+        session_id, session_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.link = session_link
+        payment.save()
 
 
 class UserListAPIView(ListAPIView):

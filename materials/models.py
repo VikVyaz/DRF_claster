@@ -19,6 +19,12 @@ class Course(models.Model):
         null=True,
         blank=True
     )
+    price = models.DecimalField(
+        verbose_name='Цена курса в $',
+        default=1.0,
+        max_digits=10,
+        decimal_places=2
+    )
 
     class Meta:
         verbose_name = "Курс"
@@ -40,6 +46,12 @@ class Lesson(models.Model):
         verbose_name="Создатель урока",
         null=True,
         blank=True
+    )
+    price = models.DecimalField(
+        verbose_name='Цена урока в $',
+        default=1.0,
+        max_digits=10,
+        decimal_places=2
     )
 
     class Meta:
