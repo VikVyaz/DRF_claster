@@ -1,5 +1,6 @@
 from datetime import timedelta
 from pathlib import Path
+from corsheaders.defaults import default_headers
 
 from decouple import config
 
@@ -20,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "drf_yasg",
+    "corsheaders",
 
     "rest_framework",
     "rest_framework_simplejwt",
@@ -50,6 +52,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -125,3 +129,16 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000"
+    ]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "Authorization",
+]
+

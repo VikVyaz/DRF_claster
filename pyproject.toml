@@ -23,6 +23,7 @@ ipython = "^9.4.0"
 coverage = "^7.10.5"
 drf-yasg = "^1.21.11"
 stripe = "^13.0.1"
+django-cors-headers = "^4.9.0"
 
 
 [build-system]
