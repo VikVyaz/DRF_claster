@@ -1,7 +1,10 @@
+from datetime import timedelta
+
 from rest_framework import generics, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework.response import Response
 
 from .models import Course, Lesson, CourseSubscribe
@@ -9,6 +12,7 @@ from .paginators import MaterialsPaginator
 from .permissions import IsModer, IsOwner
 from .serializers import (CourseDetailSerializer, CourseSerializer,
                           LessonSerializer, CourseSubscribeSerializer)
+from .tasks import mailsender
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -25,6 +29,21 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        last_update = self.get_object().updated_at
+
+        course = serializer.save()
+
+        if not last_update or timezone.now() - last_update > timedelta(hours=4):
+            emails = list(
+                CourseSubscribe.objects.filter(course=course).values_list('subscriber__email', flat=True)
+            )
+
+            if emails:
+                mailsender.delay(emails)
+        else:
+            print('Курс обновлялся меньше 4 часов назад, email об обновлении не отправляется')
 
     def get_serializer_class(self):
         if self.action == "retrieve":

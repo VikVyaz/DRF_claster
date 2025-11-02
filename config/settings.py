@@ -104,16 +104,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
 USE_TZ = True
 
 STATIC_URL = "static/"
+
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "/media/"
+
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -140,7 +142,8 @@ if DEBUG:
 else:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:8000",
-        "http://127.0.0.1:8000"
+        "http://127.0.0.1:8000",
+        "http://127.0.0.1:8000/swagger/"
     ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
@@ -153,8 +156,19 @@ CELERY_BROKER_URL = config('REDIS_URL')
 
 CELERY_RESULT_BACKEND = config('REDIS_BACKEND')
 
-CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_ENABLE_UTC = True
 
 CELERY_TASK_TRACK_STARTED = True
 
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# Email рассылка
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('YANDEX_EMAIL_HOST')
+EMAIL_PORT = config('YANDEX_EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('YANDEX_EMAIL_USE_TLS', cast=bool)
+EMAIL_USE_SSL = config('YANDEX_EMAIL_USE_SSL', cast=bool)
+EMAIL_HOST_USER = config('YANDEX_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('YANDEX_EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
