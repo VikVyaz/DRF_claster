@@ -1,17 +1,17 @@
 from datetime import timedelta
 
-from rest_framework import generics, viewsets
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import Course, Lesson, CourseSubscribe
+from .models import Course, CourseSubscribe, Lesson
 from .paginators import MaterialsPaginator
 from .permissions import IsModer, IsOwner
 from .serializers import (CourseDetailSerializer, CourseSerializer,
-                          LessonSerializer, CourseSubscribeSerializer)
+                          CourseSubscribeSerializer, LessonSerializer)
 from .tasks import mailsender
 
 

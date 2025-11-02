@@ -1,7 +1,8 @@
 from datetime import timedelta
 from pathlib import Path
-from corsheaders.defaults import default_headers
 
+from celery.schedules import crontab
+from corsheaders.defaults import default_headers
 from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -104,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "Europe/Moscow"
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -156,14 +157,24 @@ CELERY_BROKER_URL = config('REDIS_URL')
 
 CELERY_RESULT_BACKEND = config('REDIS_BACKEND')
 
-CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TIMEZONE = "UTC"
 CELERY_ENABLE_UTC = True
 
 CELERY_TASK_TRACK_STARTED = True
 
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
+# Celery-beat
+
+CELERY_BEAT_SCHEDULE = {
+    'check_activity': {
+        'task': 'materials.tasks.user_is_active_daily_check',
+        'schedule': crontab(hour=0, minute=0),
+    },
+}
+
 # Email рассылка
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('YANDEX_EMAIL_HOST')
 EMAIL_PORT = config('YANDEX_EMAIL_PORT', cast=int)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Course, Lesson, CourseSubscribe
+from .models import Course, CourseSubscribe, Lesson
 from .validators import UrlValidator
 
 

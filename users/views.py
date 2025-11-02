@@ -9,7 +9,8 @@ from users.models import Payment, User
 from users.paginators import PaymentPaginator
 from users.permissions import IsSuperUser
 from users.serializers import PaymentSerializer, UserSerializer
-from users.services import create_stripe_price, create_stripe_session, create_stripe_product
+from users.services import (create_stripe_price, create_stripe_product,
+                            create_stripe_session)
 
 
 class PaymentListAPIView(ListAPIView):

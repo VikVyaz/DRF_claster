@@ -1,11 +1,11 @@
-from django.urls import reverse
 from django.contrib.auth.models import Group
+from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 from users.models import User
-from .models import Lesson, Course, CourseSubscribe
 
-from rest_framework import status
+from .models import Course, CourseSubscribe, Lesson
 
 
 class LessonTestCase(APITestCase):
